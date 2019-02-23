@@ -2,8 +2,20 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 import { searchRequest } from '../../helpers';
 
+import { MovieInfo } from '../info';
+
+const StyledContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    min-height: 100vh;
+    margin-top: 40px;
+`;
+
 const StyledForm = styled.form`
     display: flex;
+    margin-bottom: 20px;
 `;
 
 const StyledFormGroup = styled.fieldset`
@@ -21,7 +33,7 @@ const StyledInput = styled.input`
     border-bottom: 1px solid black;
     width: 270px;
     transition:0.2s ease all; 
-    &:focus {
+    &:focus, &:valid {
         border-bottom: 1px solid deepskyblue;
     }
 `;
@@ -48,15 +60,12 @@ const StyledButton = styled.button`
     &:hover {
         box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
     }
-    &:active {
-        box-shadow: 0;
-    }
 `;
 
 export class SearchField extends Component {
     state = {
         text: '',
-        movie: null,
+        movies: [],
         error: '',
         loading: false
     }
@@ -67,23 +76,26 @@ export class SearchField extends Component {
         e.preventDefault();
         this.setState({ loading: true });
         const res = await searchRequest(text);
-        if(res.response) {
-            this.setState({ movie: res, loading: false });
+        if(res.Response) {
+            this.setState({ movies: res.Search, loading: false });
         } else {
             this.setState({ error: res.Error, loading: false });
         }
     }
 
     render() {
-        const { loading, text } = this.state;
+        const { loading, text, movies } = this.state;
         return (
-            <StyledForm onSubmit={this.onFormSubmit}>
-                <StyledFormGroup>
-                    <StyledInput required name="search" type="text" onChange={this.onTextChange} />
-                    <StyledLabel htmlFor="search">Search Movie</StyledLabel>
-                </StyledFormGroup>
-                <StyledButton disabled={loading || text.length < 1} type="submit">Search</StyledButton>
-            </StyledForm>    
+            <StyledContainer>
+                <StyledForm onSubmit={this.onFormSubmit}>
+                    <StyledFormGroup>
+                        <StyledInput required name="search" type="text" onChange={this.onTextChange} />
+                        <StyledLabel htmlFor="search">Search Movie</StyledLabel>
+                    </StyledFormGroup>
+                    <StyledButton disabled={loading || text.length < 1} type="submit">Search</StyledButton>
+                </StyledForm>
+                {movies.length > 0 && movies.map((movie) => <MovieInfo key={movie.imdbID} {...movie} />)}    
+            </StyledContainer>
         );
     }
 };

@@ -1,25 +1,23 @@
 import React, { Component, Fragment } from 'react';
-import styled from 'styled-components';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 //Styles
 import { GlobalStyle } from './helpers';
 //Components
 import { SearchField } from './components/input';
+import { MovieInfo } from './components/info';
 
-const AppWrapperStyled = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-`;
 
 class App extends Component {
   render() {
     return (
       <Fragment>
         <GlobalStyle />
-        <AppWrapperStyled>
-          <SearchField />
-        </AppWrapperStyled>    
+        <Router>
+          <Fragment>
+            <Route path="/" component={SearchField} />
+            <Route path="/movie/:id" component={MovieInfo} />
+          </Fragment>
+        </Router>
       </Fragment>
     );
   }
