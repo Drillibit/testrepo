@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 //Request movie data
 import { movieRequest } from '../../helpers/movieRequest';
+import { ErrorDisplay } from '../error';
 
 const StyledPageWrapper = styled.div`
     display: flex;
@@ -47,18 +48,28 @@ const StyledButton = styled.button`
 export class MoviePage extends Component {
     state = {
         loading: true,
-        movie: {}
+        movie: {},
+        error: false
     }
 
     componentDidMount() {
         movieRequest(this.props.match.params.id)
             .then(movie => this.setState({ loading: false, movie }));
     }
+
+    componentDidCatch(){
+        this.setState({ error: true });
+    }
     render() {
-        const { loading, movie } = this.state;
+        const { loading, movie, error } = this.state;
         if(loading) {
           return  <p>Loading...</p>
         }
+
+        if(error) {
+            return <ErrorDisplay />;
+        }
+
         return (
             <StyledPageWrapper>
                 {movie.Poster !== 'N/A' && <StyledImage alt={`poster of ${movie.title}`} src={movie.Poster} />}

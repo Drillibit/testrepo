@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { searchRequest } from '../../helpers';
 
 import { MovieInfo } from '../info';
+import { ErrorDisplay } from '../error';
 
 const StyledContainer = styled.div`
     display: flex;
@@ -66,11 +67,18 @@ export class SearchField extends Component {
     state = {
         text: '',
         movies: [],
-        error: '',
+        error: false,
         loading: false
     }
 
+    componentDidCatch() {
+        this.setState({
+            error: true
+        });
+    }
+
     onTextChange = (e) => this.setState({ text: e.target.value, error: '' });
+
     onFormSubmit = async (e) => {
         const { text } = this.state;
         e.preventDefault();
@@ -84,7 +92,10 @@ export class SearchField extends Component {
     }
 
     render() {
-        const { loading, text, movies } = this.state;
+        const { loading, text, movies, error } = this.state;
+        if(error) {
+            return <ErrorDisplay />
+        }
         return (
             <StyledContainer>
                 <StyledForm onSubmit={this.onFormSubmit}>
