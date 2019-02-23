@@ -7,6 +7,9 @@ import { SearchField } from './components/input';
 
 const AppWrapperStyled = styled.div`
   display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 `;
 
 class App extends Component {
