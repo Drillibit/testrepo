@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const StyledMovieWrapper = styled.div`
@@ -19,14 +20,16 @@ const StyledMain = styled.main`
     padding: 10px;
 `;
 
-export const MovieInfo = ({ Title, Poster, Year,}) => {
+export const MovieInfo = ({ Title, Poster, Year, imdbID }) => {
     return (
-       <StyledMovieWrapper>
-        {Poster && <img alt={`poster of ${Title}`} src={Poster} /> }
-        <StyledMain>
-            <h1>{Title}</h1>
-            <span>{Year}</span>
-        </StyledMain>
-       </StyledMovieWrapper> 
+        <Link to={`/movie/${imdbID}`}>
+            <StyledMovieWrapper>
+            {Poster && <img alt={`poster of ${Title}`} src={Poster} /> }
+            <StyledMain>
+                <h1>{Title}</h1>
+                <span>{Year}</span>
+            </StyledMain>
+            </StyledMovieWrapper> 
+        </Link>
     );
 };
