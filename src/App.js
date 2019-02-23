@@ -1,5 +1,9 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
+//Styles
+import { GlobalStyle } from './helpers';
+//Components
+import { SearchField } from './components/input';
 
 const AppWrapperStyled = styled.div`
   display: flex;
@@ -8,9 +12,12 @@ const AppWrapperStyled = styled.div`
 class App extends Component {
   render() {
     return (
-      <AppWrapperStyled>
-        <h1>Hello!</h1>
-      </AppWrapperStyled>    
+      <Fragment>
+        <GlobalStyle />
+        <AppWrapperStyled>
+          <SearchField />
+        </AppWrapperStyled>    
+      </Fragment>
     );
   }
 }
